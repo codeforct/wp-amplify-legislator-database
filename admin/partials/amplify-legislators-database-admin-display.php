@@ -13,4 +13,4 @@
  */
 ?>
 
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
+<h1>Amplify Legislators Database</h1>

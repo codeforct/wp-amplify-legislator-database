@@ -100,4 +100,17 @@ class Amplify_Legislators_Database_Admin {
 
 	}
 
+	public function add_admin_page() {
+		$page_title = 'Amplify Legislators Database';
+		$menu_title = 'Amplify Legislators Database';
+		$capability = 'manage_options';
+		$menu_slug = 'amplify-legislators-database';
+		$function = array( $this, 'load_admin_page_content' );
+		add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function );
+	}
+
+	public function load_admin_page_content() {
+    require_once plugin_dir_path( __FILE__ ) . 'partials/amplify-legislators-database-admin-display.php';
+	}
+
 }
