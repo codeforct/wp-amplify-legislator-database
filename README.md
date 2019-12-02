@@ -1,5 +1,7 @@
 # Amplify Legislators Database
 
+Legislator Database CSV: http://ftp.cga.ct.gov/pub/data/LegislatorDatabase.csv
+
 ## How to install
 
 ### Development

@@ -44,13 +44,13 @@ class Amplify_Legislators_Database_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $plugin_name       The name of this plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -104,13 +104,54 @@ class Amplify_Legislators_Database_Admin {
 		$page_title = 'Amplify Legislators Database';
 		$menu_title = 'Amplify Legislators Database';
 		$capability = 'manage_options';
-		$menu_slug = 'amplify-legislators-database';
-		$function = array( $this, 'load_admin_page_content' );
+		$menu_slug  = 'amplify-legislators-database';
+		$function   = array( $this, 'load_admin_page_content' );
 		add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function );
 	}
 
 	public function load_admin_page_content() {
-    require_once plugin_dir_path( __FILE__ ) . 'partials/amplify-legislators-database-admin-display.php';
+		require_once plugin_dir_path( __FILE__ ) . 'partials/amplify-legislators-database-admin-display.php';
+	}
+
+	public function handle_process_database_form() {
+		$form_nonce = $_POST['amplify_process_database_form_nonce'];
+
+		if ( isset( $form_nonce ) && wp_verify_nonce( $form_nonce, 'amplify_process_database_form_nonce' ) ) {
+			$data = file_get_contents( 'ftp://ftp.cga.ct.gov/pub/data/LegislatorDatabase.csv' );
+			$csv  = array_map( 'str_getcsv', explode( "\n", $data ) );
+
+			$field_names = array_values( $csv[0] );
+
+			// Remove column header
+			array_shift( $csv );
+
+			foreach ( $csv as $line ) {
+				// Skip the empty line
+				if ( empty( $line ) ) {
+					continue;
+				}
+
+				$_res = new stdClass();
+				foreach ( $line as $index => $f ) {
+					$_res->{$field_names[ $index ]} = $line[ $index ];
+				}
+				$res[] = $_res;
+			}
+
+			print( '<pre>' . print_r( $res, true ) . '</pre>' );
+
+			// TODO: Render HTML Table with print-friendly styles
+			exit();
+		} else {
+			wp_die(
+				__( 'Invalid nonce specified', $this->plugin_name ),
+				__( 'Error', $this->plugin_name ),
+				array(
+					'response'  => 403,
+					'back_link' => 'admin.php?page=' . $this->plugin_name,
+				)
+			);
+		}
 	}
 
 }
