@@ -101,12 +101,15 @@ class Amplify_Legislators_Database_Admin {
 	}
 
 	public function add_admin_page() {
-		$page_title = 'Amplify Legislators Database';
-		$menu_title = 'Amplify Legislators Database';
+		$page_title = 'Amplify';
+		$menu_title = 'Amplify';
 		$capability = 'manage_options';
 		$menu_slug  = 'amplify-legislators-database';
 		$function   = array( $this, 'load_admin_page_content' );
 		add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function );
+
+		add_submenu_page( $menu_slug, 'Legislators Database', 'Legislators Database', $capability, $menu_slug);
+		add_submenu_page( $menu_slug, 'Settings', 'Settings', $capability, 'amplify-settings', $function);
 	}
 
 	public function load_admin_page_content() {
@@ -127,21 +130,24 @@ class Amplify_Legislators_Database_Admin {
 
 			foreach ( $csv as $line ) {
 				// Skip the empty line
-				if ( empty( $line ) ) {
+				if ( empty( $line ) || count( $line ) === 1 ) {
 					continue;
 				}
 
 				$_res = new stdClass();
+
 				foreach ( $line as $index => $f ) {
-					$_res->{$field_names[ $index ]} = $line[ $index ];
+					$value = trim($line[ $index ]);
+					$key = str_replace(' ', '_', $field_names[ $index ]);
+					$key = str_replace('/', '_', $key);
+					$_res->{$key} = $value;
 				}
+
 				$res[] = $_res;
 			}
 
-			print( '<pre>' . print_r( $res, true ) . '</pre>' );
-
 			// TODO: Render HTML Table with print-friendly styles
-			exit();
+			require_once plugin_dir_path( __FILE__ ) . 'partials/amplify-legislators-database-admin-table.php';
 		} else {
 			wp_die(
 				__( 'Invalid nonce specified', $this->plugin_name ),
