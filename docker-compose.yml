@@ -1,0 +1,30 @@
+version: '3.1'
+services:
+  wordpress:
+    image: wordpress:5.3.0
+    ports:
+      - "80:80"
+    links: 
+      - db:mysql
+    environment: 
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wordpress:/var/www/html
+      - ./:/var/www/html/wp-content/plugins/wp-amplify-legislator-database
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - legislator-db:/var/lib/mysql
+volumes:
+  wordpress:
+  legislator-db:
