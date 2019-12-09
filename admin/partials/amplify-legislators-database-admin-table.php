@@ -35,6 +35,10 @@
     }
 
     @media print {
+      @page {
+        size: landscape;
+      }
+
       button {
         display: none;
       }
@@ -51,10 +55,6 @@
 
       td {
         vertical-align: baseline;
-      }
-
-      tr td:first-of-type {
-        display: none;
       }
 
       tr td:nth-of-type(2) {
