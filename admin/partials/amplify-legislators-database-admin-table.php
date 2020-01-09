@@ -19,19 +19,40 @@
 
 <head>
   <style>
+
+    h3 {
+      text-align: center;
+      font-family: sans-serif;
+    }
+
     table {
-      border-collapse: collapse;
+      border-collapse: separate;
     }
 
     table,
     th,
     td {
-      border-collapse: collapse;
+      border-collapse: separate;
+      border: 0px;
+      font-family: sans-serif;
+      margin: 15px 0px;
+      border-spacing: 5px 2rem;
+    }
+
+    .first{
       border: 1px solid black;
+    }
+
+    .logo{
+      display: block;
+      height: 140px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     td {
       padding: 5px;
+      
     }
 
     @media print {
@@ -43,8 +64,12 @@
         display: none;
       }
 
+      .logo {
+        height: 125px;
+      }
+
       table {
-        font-size: 14px;
+        font-size: 12px;
         page-break-inside: auto;
       }
 
@@ -65,15 +90,18 @@
 </head>
 
 <body>
+  <img class="logo" src="../wp-content/plugins/wp-amplify-legislator-database/assets/amplify_logo.jpg" alt="Amplify Logo">
+  <h3>Legislators 2019-2020</h3>
   <button onclick="window.print()">Print This Page</button>
-  <table>
+  <table border-spacing=>
     <?php foreach ($res as $row) : ?>
       <tr>
-        <td width="200"></td>
+        <td class="first" width="200"></td>
         <td>
           <div>
-            <p>
-              <strong><?php echo $row->first_name . " " . $row->last_name; ?></strong> <br />
+            <p> 
+              <!-- The senator or representative colum is not returning -->
+              <strong><?php echo $row->first_name . " " . $row->last_name. " " . $row->senator_or_rep; ?></strong> <br />
               <?php echo $row->capitol_street_address . ", Rm. " . $row->room_number; ?> <br />
               <?php echo $row->capitol_city; ?> <br />
               Capitol: <?php echo $row->capitol_phone; ?>
@@ -83,7 +111,7 @@
         <td><?php echo $row->party; ?></td>
         <td>
           <?php echo $row->district_number; ?> District <br />
-          <?php echo $row->email; ?>
+          <a href="mailto:<?php echo $row->email; ?>?body=<?php echo $body; ?>"><?php echo $row->email; ?></a>
         </td>
         <td>
           <div>
