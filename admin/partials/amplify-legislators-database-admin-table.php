@@ -23,6 +23,8 @@
     h3 {
       text-align: center;
       font-family: sans-serif;
+      margin: 0px 0px;
+      padding-left: 2.2rem;
     }
 
     table {
@@ -39,15 +41,16 @@
       border-spacing: 5px 2rem;
     }
 
-    .first{
+    .first {
       border: 1px solid black;
     }
 
-    .logo{
+    #logo {
       display: block;
       height: 140px;
       margin-left: auto;
       margin-right: auto;
+      margin-bottom: 0;
     }
 
     td {
@@ -64,8 +67,12 @@
         display: none;
       }
 
-      .logo {
-        height: 125px;
+      #logo {
+        height: 120px;
+      }
+
+      h3 {
+        font-size: 14px;
       }
 
       table {
@@ -90,7 +97,7 @@
 </head>
 
 <body>
-  <img class="logo" src="../wp-content/plugins/wp-amplify-legislator-database/assets/amplify_logo.jpg" alt="Amplify Logo">
+  <img id="logo" src="../wp-content/plugins/wp-amplify-legislator-database/assets/amplify_logo.jpg" alt="Amplify Logo">
   <h3>Legislators 2019-2020</h3>
   <button onclick="window.print()">Print This Page</button>
   <table border-spacing=>
@@ -101,7 +108,7 @@
           <div>
             <p> 
               <!-- The senator or representative colum is not returning -->
-              <strong><?php echo $row->first_name . " " . $row->last_name. " " . $row->senator_or_rep; ?></strong> <br />
+              <strong><?php echo $row->first_name . " " . $row->last_name. " " . $row->senator_or_representative; ?></strong> <br />
               <?php echo $row->capitol_street_address . ", Rm. " . $row->room_number; ?> <br />
               <?php echo $row->capitol_city; ?> <br />
               Capitol: <?php echo $row->capitol_phone; ?>
