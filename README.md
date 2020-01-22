@@ -13,8 +13,13 @@ Legislator Database CSV: http://ftp.cga.ct.gov/pub/data/LegislatorDatabase.csv
 ### Development with Docker
 An alternative to M/W/XAMP is to use [docker](https://www.docker.com/) with or without [docker-compose](https://docs.docker.com/compose/). This project contains a `docker-compose.yml` file to help you begin developing quickly. If you need to install docker and docker-compose, you can use the following links:
 
+**Mac, Linux, and Windows 10 Pro**
 - [Docker installation instructions](https://docs.docker.com/v17.09/engine/installation/#supported-platforms)
 - [Docker compose installation instructions](https://docs.docker.com/v17.12/compose/install/#install-compose)
+
+**Windows 10 Home** (requires a Linux virtual machine)
+- [VM setup and docker installation](https://www.sitepoint.com/docker-windows-10-home/)
+- If port 80 is being blocked by IIS, [here's how to change it](https://www.codeproject.com/Articles/708718/How-to-Change-Default-Port-of-IIS-Manager-from-in)
 
 The `docker-compose` file included uses docker images for [WordPress 5.3](https://hub.docker.com/_/wordpress) and [mysql 5.7](https://hub.docker.com/_/mysql). To start the project, run `docker-compose up`. This will: 
 
