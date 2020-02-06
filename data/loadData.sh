@@ -30,8 +30,12 @@ do
 done
 shift $(( $OPTIND - 1 ))
 
-if [[ -z $user || -z $password || -z $database ]]; then
+if [[ -z $user || -z $database ]]; then
 	_usage
+fi
+
+if [[ -z $password ]]; then
+	read -sp "Database password: " password
 fi
 
 if [[ -z $datasource_townreps ]]; then
@@ -43,5 +47,10 @@ else
 fi
 
 #Get town representative info.
-wget $datasource_townreps
+wget -q $datasource_townreps -O $datafile
 mysql --host=$host --user=$user --password=$password "$database" < <(sed 's/{INFILE}/'${datafile}'/' load_town_reps.sql)
+
+#Pull Legislator database from CT.gov
+legdb="ftp://ftp.cga.ct.gov/pub/data/LegislatorDatabase.csv"
+wget -q $legdb -O LegislatorDatabase.csv
+mysql --host=$host --user=$user --password=$password "$database" < load_legislators.sql
