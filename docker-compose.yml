@@ -25,6 +25,7 @@ services:
       MYSQL_PASSWORD: wordpress
     volumes:
       - legislator-db:/var/lib/mysql
+      - ./data:/data
 volumes:
   wordpress:
   legislator-db:
