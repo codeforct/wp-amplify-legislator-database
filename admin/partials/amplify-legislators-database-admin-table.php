@@ -27,6 +27,10 @@
       padding-left: 2.2rem;
     }
 
+    h2 {
+      text-align: center;
+    }
+
     table {
       border-collapse: separate;
     }
@@ -71,6 +75,10 @@
         height: 120px;
       }
 
+      h2 {
+      text-align: center;
+      }
+
       h3 {
         font-size: 14px;
       }
@@ -86,12 +94,12 @@
       }
 
       td {
-        vertical-align: baseline;
+         vertical-align: baseline; 
       }
 
-      tr td:nth-of-type(2) {
+      /* tr td:nth-of-type(2) {
         white-space: nowrap;
-      }
+      } */
     }
   </style>
 </head>
@@ -100,15 +108,32 @@
   <img id="logo" src="../wp-content/plugins/wp-amplify-legislator-database/assets/amplify_logo.jpg" alt="Amplify Logo">
   <h3>Legislators 2019-2020</h3>
   <button onclick="window.print()">Print This Page</button>
+  <?php $cac_check = array(); ?>
   <table border-spacing=>
     <?php foreach ($res as $row) : ?>
       <tr>
+        <td colspan="7">
+          <h2>
+            <?php
+              if (in_array($row->_cac, $cac_check)) 
+              {}
+              else
+              { 
+                
+                $cac_check[] = $row->_cac;
+                echo "CAC $row->_cac"; 
+              } 
+            ?>
+          </h2>
+        </td>
+      </tr>
+      <tr>
         <td class="first" width="200"></td>
+      
         <td>
           <div>
             <p> 
-              <!-- The senator or representative colum is not returning -->
-              <strong><?php echo $row->first_name . " " . $row->last_name. " " . $row->senator_or_representative; ?></strong> <br />
+              <strong><?php echo  $row->senator_representative. " " .$row->first_name. " " . $row->last_name; ?></strong> <br />
               <?php echo $row->capitol_street_address . ", Rm. " . $row->room_number; ?> <br />
               <?php echo $row->capitol_city; ?> <br />
               Capitol: <?php echo $row->capitol_phone; ?>
@@ -117,7 +142,8 @@
         </td>
         <td><?php echo $row->party; ?></td>
         <td>
-          <?php echo $row->district_number; ?> District <br />
+          CAC: <?php echo $row->_cac; ?> <br />
+          <?php echo $row->dist; ?> District <br />
           <a href="mailto:<?php echo $row->email; ?>?body=<?php echo $body; ?>"><?php echo $row->email; ?></a>
         </td>
         <td>
