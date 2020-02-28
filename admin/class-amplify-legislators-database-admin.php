@@ -100,6 +100,7 @@ class Amplify_Legislators_Database_Admin {
 
 	}
 
+
 	public function add_admin_page() {
 		$page_title = 'Amplify';
 		$menu_title = 'Amplify';
@@ -120,33 +121,15 @@ class Amplify_Legislators_Database_Admin {
 		$form_nonce = $_POST['amplify_process_database_form_nonce'];
 
 		if ( isset( $form_nonce ) && wp_verify_nonce( $form_nonce, 'amplify_process_database_form_nonce' ) ) {
-			$data = file_get_contents( 'ftp://ftp.cga.ct.gov/pub/data/LegislatorDatabase.csv' );
-			$csv  = array_map( 'str_getcsv', explode( "\n", $data ) );
 
-			$field_names = array_values( $csv[0] );
+			$result = file_get_contents("https://oil-shadow-universe.glitch.me/legislators-database-full.json");
+			$obj = json_decode($result); //Turns the json into an object
+			$res = $obj->data; //Takes the data part of the json
 
-			// Remove column header
-			array_shift( $csv );
+			//Sorts the list of law makers by Cac region
+			usort($res, function($a, $b) {return strcmp($a->_cac, $b->_cac);});
 
-			foreach ( $csv as $line ) {
-				// Skip the empty line
-				if ( empty( $line ) || count( $line ) === 1 ) {
-					continue;
-				}
 
-				$_res = new stdClass();
-
-				foreach ( $line as $index => $f ) {
-					$value = trim($line[ $index ]);
-					$key = str_replace(' ', '_', $field_names[ $index ]);
-					$key = str_replace('/', '_', $key);
-					$_res->{$key} = $value;
-				}
-
-				$res[] = $_res;
-			}
-
-			// TODO: Render HTML Table with print-friendly styles
 			require_once plugin_dir_path( __FILE__ ) . 'partials/amplify-legislators-database-admin-table.php';
 		} else {
 			wp_die(
@@ -160,4 +143,15 @@ class Amplify_Legislators_Database_Admin {
 		}
 	}
 
+	//Function for printing to Console and debugging lol
+	public function console_log($output, $with_script_tags = true) {
+		$js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . ');';
+		if ($with_script_tags) {
+			$js_code = '<script>' . $js_code . '</script>';
+		}
+		echo $js_code;
+	}
+	//echo '<script>console.log('.$result.')</script>';
+	// echo '<script>console.log("BEG")</script>';
+	
 }
