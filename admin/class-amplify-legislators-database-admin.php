@@ -122,7 +122,13 @@ class Amplify_Legislators_Database_Admin {
 
 		if ( isset( $form_nonce ) && wp_verify_nonce( $form_nonce, 'amplify_process_database_form_nonce' ) ) {
 
-			$result = file_get_contents("https://oil-shadow-universe.glitch.me/legislators-database-full.json");
+			$result = @file_get_contents("https://raw.githubusercontent.com/codeforct/legislator-database/master/data/latest.json");
+
+			if ($result === FALSE) {
+				$fallback_file_path = plugin_dir_path( __FILE__ ) . "data/fallback.json";
+				$result = file_get_contents($fallback_file_path);
+			}
+
 			$obj = json_decode($result); //Turns the json into an object
 			$res = $obj->data; //Takes the data part of the json
 
@@ -153,5 +159,5 @@ class Amplify_Legislators_Database_Admin {
 	}
 	//echo '<script>console.log('.$result.')</script>';
 	// echo '<script>console.log("BEG")</script>';
-	
+
 }
