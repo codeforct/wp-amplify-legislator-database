@@ -109,8 +109,8 @@ class Amplify_Legislators_Database_Admin {
 		$function   = array( $this, 'load_admin_page_content' );
 		add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function );
 
-		add_submenu_page( $menu_slug, 'Legislators Database', 'Legislators Database', $capability, $menu_slug);
-		add_submenu_page( $menu_slug, 'Settings', 'Settings', $capability, 'amplify-settings', $function);
+		add_submenu_page( $menu_slug, 'Legislators Database', 'Legislators Database', $capability, $menu_slug );
+		add_submenu_page( $menu_slug, 'Settings', 'Settings', $capability, 'amplify-settings', $function );
 	}
 
 	public function load_admin_page_content() {
@@ -122,19 +122,23 @@ class Amplify_Legislators_Database_Admin {
 
 		if ( isset( $form_nonce ) && wp_verify_nonce( $form_nonce, 'amplify_process_database_form_nonce' ) ) {
 
-			$result = @file_get_contents("https://raw.githubusercontent.com/codeforct/legislator-database/master/data/latest.json");
+			$result = @file_get_contents( 'https://raw.githubusercontent.com/codeforct/legislator-database/master/data/latest.json' );
 
-			if ($result === FALSE) {
-				$fallback_file_path = plugin_dir_path( __FILE__ ) . "data/fallback.json";
-				$result = file_get_contents($fallback_file_path);
+			if ( $result === false ) {
+				$fallback_file_path = plugin_dir_path( __FILE__ ) . 'data/fallback.json';
+				$result             = file_get_contents( $fallback_file_path );
 			}
 
-			$obj = json_decode($result); //Turns the json into an object
-			$res = $obj->data; //Takes the data part of the json
+			$obj = json_decode( $result ); // Turns the json into an object
+			$res = $obj->data; // Takes the data part of the json
 
-			//Sorts the list of law makers by Cac region
-			usort($res, function($a, $b) {return strcmp($a->_cac, $b->_cac);});
-
+			// Sorts the list of law makers by Cac region
+			usort(
+				$res,
+				function( $a, $b ) {
+					return strcmp( $a->_cac, $b->_cac );
+				}
+			);
 
 			require_once plugin_dir_path( __FILE__ ) . 'partials/amplify-legislators-database-admin-table.php';
 		} else {
@@ -149,15 +153,14 @@ class Amplify_Legislators_Database_Admin {
 		}
 	}
 
-	//Function for printing to Console and debugging lol
-	public function console_log($output, $with_script_tags = true) {
-		$js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . ');';
-		if ($with_script_tags) {
+	// Function for printing to Console and debugging lol
+	public function console_log( $output, $with_script_tags = true ) {
+		$js_code = 'console.log(' . json_encode( $output, JSON_HEX_TAG ) . ');';
+		if ( $with_script_tags ) {
 			$js_code = '<script>' . $js_code . '</script>';
 		}
 		echo $js_code;
 	}
-	//echo '<script>console.log('.$result.')</script>';
+	// echo '<script>console.log('.$result.')</script>';
 	// echo '<script>console.log("BEG")</script>';
-
 }
