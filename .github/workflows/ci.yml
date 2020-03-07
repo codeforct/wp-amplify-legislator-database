@@ -16,6 +16,3 @@ jobs:
         key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
 
     - uses: php-actions/composer@v1
-
-    - name: Run linter
-      run: composer lint
