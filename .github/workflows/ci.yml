@@ -8,8 +8,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: php-actions/composer@v1
-    - name: Run linter
-      uses: php-actions/composer@v1
+
+    - name: Cache PHP dependencies
+      uses: actions/cache@v1
       with:
-        command: lint
+        path: vendor
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+
+    - uses: php-actions/composer@v1
+
+    - name: Run linter
+      run: composer lint
