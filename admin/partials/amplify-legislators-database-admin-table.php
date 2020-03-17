@@ -129,7 +129,7 @@
 		<td>
 		  <div>
 			<p>
-			  <strong><?php echo $row->senator_representative . ' ' . $row->first_name . ' ' . $row->last_name; ?></strong> <br />
+			  <strong><?php echo $row->senator_representative . ' ' . $row->first_name . ' ' . $row->last_name. ' ' . $row->suffix; ?></strong> <br />
 			  <?php echo $row->capitol_street_address . ', Rm. ' . $row->room_number; ?> <br />
 			  <?php echo $row->capitol_city; ?> <br />
 			  Capitol: <?php echo $row->capitol_phone; ?>
